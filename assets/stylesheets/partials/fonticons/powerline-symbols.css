@@ -1,0 +1,47 @@
+@font-face {
+    font-family: "PowerlineSymbols";
+    src: url('../../../fonts/powerline-symbols.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="pls-"], [class*=" pls-"] {
+    font-family: "PowerlineSymbols" !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+    
+.pls-vc_branch:before { /* version control branch */
+    content: "\e0a0";
+}
+
+.pls-ln:before { /* LN (line) */
+    content: "\e0a1";
+}
+
+.pls-lock:before { /* closed padlock */
+    content: "\e0a2";
+}
+
+.pls-arrow_right_black:before { /* rightwards black arrowhead */
+    content: "\e0b0";
+}
+
+.pls-arrow_right:before { /* rightwards arrowhead */
+    content: "\e0b1";
+}
+
+.pls-arrow_left_black:before { /* leftwards black arrowhaed */
+    content: "\e0b2";
+}
+
+.pls-arrow_left:before { /* leftwards arrowhead */
+    content: "\e0b3";
+}

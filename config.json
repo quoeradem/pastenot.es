@@ -1,0 +1,9 @@
+{
+    "url": "http://localhost:8080",
+    "port": 3000,
+    "mongoURI": "mongodb://localhost/test",
+    "editor": {
+        "theme": "material",
+        "indent": 4
+    }
+}

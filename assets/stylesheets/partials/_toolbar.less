@@ -1,0 +1,22 @@
+@import "../modules/_variables";
+
+#toolbar {
+  display: flex;
+  flex-direction: column;
+  background: @bg-darker;
+  border-right: 1px solid #000000;
+}
+
+.toolbar-child {
+    padding: 8px 0px 8px 0px;
+}
+
+.mdl-iconbutton {
+    color: @lightgrey;
+    padding: 0px !important;
+    min-width: 42px !important;
+
+    &:disabled {
+        color: @darkgrey !important;
+    }
+}

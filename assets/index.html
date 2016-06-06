@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>pastenot.es</title>
+    <meta name="description" content="pastenot.es :: An objectively better pastebin web-service.">
+    <meta name="author" content="Trevor Kulhanek">
+    <link rel="icon" href="/assets/favicon.ico">
+    <!-- Stylesheets
+    ================================================== -->
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/vendor/material.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/vendor/dialog-polyfill.min.css">
+    <!-- CSS Bundle -->
+    <link rel="stylesheet" type="text/css" href="/dist/bundle.css">
+    <!-- Load Config and Initial Window State -->
+    <script>window.__CONFIG__ = ${config};</script>
+    <script>window.__INITIAL_STATE__ = ${initialState};</script>
+</head>
+
+<body>
+    <!-- React Container -->
+	<div id="react-view"><div>${markup}</div></div>
+    <!-- Scripts
+    ================================================== -->
+    <script type="application/javascript" src='/assets/js/material.min.js'></script>
+    <script type="application/javascript" src="/assets/js/dialog-polyfill.min.js"></script>
+    <!-- JS Bundle -->
+	<script type="application/javascript" src="/dist/bundle.js"></script>
+    <!-- Polyfill Dialog Component -->
+    <script>var dialog = document.querySelector('dialog'); dialogPolyfill.registerDialog(dialog);</script>
+</body>
+</html>
