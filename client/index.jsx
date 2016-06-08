@@ -12,7 +12,12 @@ import rootReducer from '../shared/reducers';
 import promiseMiddleware from '../shared/lib/promiseMiddleware';
 
 require("./modes"); // include CM modes
-require("codemirror/theme/material.css"); // include CM theme
+
+/* CM addons */
+require('codemirror/addon/scroll/simplescrollbars.js');
+require('../assets/stylesheets/vendor/simplescrollbars.css');
+
+require('codemirror/addon/selection/active-line.js');
 
 import {} from '../assets/stylesheets/style.less'; // import LESS
 

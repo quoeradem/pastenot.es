@@ -26,7 +26,9 @@ export default class Editor extends React.Component {
             readOnly: this.props.readOnly,
             indentUnit: config.editor.indent,
             mode: this.props.mode,
-            cursorHeight: !this.props.readOnly
+            cursorHeight: !this.props.readOnly,
+            styleActiveLine: true,
+            scrollbarStyle: "overlay"
         };
         return (
             <Codemirror ref="editor"

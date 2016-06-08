@@ -4,28 +4,29 @@
 .mdl-dialog {
     top: 0 !important;
     width: 40% !important;
-    background: #37474F;
+    background: @ui-base00;
+
     padding: 12px;
     .border-radiuses(0, 0, 4px, 4px);
 }
 
 .mdl-list__item {
-    border-top: 2px solid #37474F;
+    border-top: 1px solid #37474F;
     font-family: @font-family;
     font-size: 14px;
     font-weight: 300;
     padding: 8px;
     min-height: 32px;
-    color: #616161;
+    color: @ui-base2;
 
     &:hover {
-        color: #94D7D0;
+        color: @ui-cyan;
     }
 }
 
 input {
-    color: #fff;
-    background: #20282b;
+    color: #000;
+    background: @ui-base2;
     outline: none !important;
     width: 100%;
     font-family: @font-family;
@@ -38,7 +39,7 @@ input {
 
 .child-container {
     margin-top: 10px;
-    background: #20282b;
+    background: @ui-base01;
     overflow-y: scroll;
     max-height: 300px;
     .border-radius(4px);

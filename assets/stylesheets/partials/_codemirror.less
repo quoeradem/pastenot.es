@@ -1,0 +1,88 @@
+/* Oceanic Next palette */
+@base03:  #1B2B34;
+@base02:  #343D46;
+@base01:  #4F5B66;
+@base00:  #65737E;
+@base0:   #A7ADBA;
+@base1:   #C0C5CE;
+@base2:   #CDD3DE;
+@base3:   #D8DEE9;
+@red:     #EC5f67;
+@orange:  #F99157;
+@yellow:  #FAC863;
+@green:   #99C794;
+@cyan:    #5FB3B3;
+@blue:    #6699CC;
+@magenta: #C594C5;
+@brown:   #AB7967;
+
+.cm-s-material {
+  background-color: #1E313B;
+  color: @base1;
+}
+.cm-s-material .CodeMirror-gutters {
+  background: #1E313B;
+  border: none;
+}
+.cm-s-material .CodeMirror-cursor { border-left: 1px solid #f8f8f0; }
+.cm-s-material div.CodeMirror-selected { background: rgba(255, 255, 255, 0.15); }
+.cm-s-material.CodeMirror-focused div.CodeMirror-selected { background: rgba(255, 255, 255, 0.10); }
+.cm-s-material .CodeMirror-line::selection, .cm-s-material .CodeMirror-line > span::selection, .cm-s-material .CodeMirror-line > span > span::selection { background: rgba(255, 255, 255, 0.10); }
+.cm-s-material .CodeMirror-line::-moz-selection, .cm-s-material .CodeMirror-line > span::-moz-selection, .cm-s-material .CodeMirror-line > span > span::-moz-selection { background: rgba(255, 255, 255, 0.10); }
+
+.cm-s-material .CodeMirror-activeline-background { background: rgba(0, 0, 0, 0); }
+.cm-s-material .cm-atom       { color: @orange; }
+.cm-s-material .cm-attribute  { color: @yellow; }
+.cm-s-material .cm-builtin    { color: #DECB6B; }
+.cm-s-material .cm-comment    { color: @base00; }
+.cm-s-material .cm-def        { color: @base1; }
+.cm-s-material .cm-error      { color: @base3; background-color: @red; }
+.cm-s-material .cm-keyword    { color: @magenta; }
+.cm-s-material .cm-meta       { color: @cyan; }
+.cm-s-material .cm-number     { color: @orange; }
+.cm-s-material .cm-operator   { color: @cyan; }
+.cm-s-material .cm-property   { color: @blue; }
+.cm-s-material .cm-qualifier  { color: #DECB6B; }
+.cm-s-material .cm-string     { color: @green; }
+.cm-s-material .cm-string-2   { color: @cyan; }
+.cm-s-material .cm-tag        { color: @red; }
+.cm-s-material .cm-variable   { color: @base1; }
+.cm-s-material .cm-variable-2 { color: @base1; }
+.cm-s-material .cm-variable-3 { color: @blue; }
+
+.cm-s-material .CodeMirror-matchingbracket {
+  text-decoration: underline;
+  color: white !important;
+}
+
+.cm-s-material .CodeMirror-linenumber {
+    color: @base01;
+    font-size: 9px;
+    font-weight: 300;
+    padding: 0 20px 0 0;
+}
+
+/* active-line addon */
+.cm-s-material .CodeMirror-activeline-gutter .CodeMirror-linenumber {
+    color: @base1;
+}
+
+/* CM Scrollbars */
+.CodeMirror-overlayscroll-horizontal div, .CodeMirror-overlayscroll-vertical div {
+  background: #000;
+  border-color: @base01 !important;
+  opacity: 0.4;
+  border: 1px solid;
+}
+
+.mdl-snackbar { // set z-index above scrollbars
+    z-index: 9001;
+}
+
+.CodeMirror-overlayscroll-horizontal {
+  height: 6px;
+}
+
+.CodeMirror-overlayscroll-vertical {
+  width: 6px;
+}
