@@ -66,11 +66,13 @@ app.use(function *() {
             this.body = "not found";
         } else {
             getReduxPromise().then(() => {
-                let initialState = store.getState();
                 let markup = renderToString(InitialComponent);
+                let initialState = JSON.stringify(store.getState())
+                    .replace(/<\/script/g, '<\\/script')
+                    .replace(/<!--/g, '<\\!--');
 
                 let html = index.replace('${markup}', markup)
-                    .replace('${initialState}', JSON.stringify(initialState))
+                    .replace('${initialState}', initialState)
                     .replace('${config}', JSON.stringify(config));
                 resolver.resolve(html);
             });
