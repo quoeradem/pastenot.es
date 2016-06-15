@@ -41,7 +41,7 @@ const modes = [
     { _index: 27,   label: "YAML",                  mode: "text/x-yaml" },
 ];
 
-@connect(state => ({mode: state.mode, location: state.location, chars: state.meta.chars, lines: state.meta.lines, views: state.meta.views}))
+@connect(state => ({mode: state.mode, router: state.router, chars: state.meta.chars, lines: state.meta.lines, views: state.meta.views}))
 export default class StatusBar extends React.Component {
     constructor(props) {
         super(props);
@@ -92,7 +92,7 @@ export default class StatusBar extends React.Component {
     }
 
 	render() {
-        const { mode, location, chars, lines, views, dispatch } = this.props;
+        const { mode, router, chars, lines, views, dispatch } = this.props;
         let m = modes.find(m => m.mode === mode);
 
 		return (
@@ -103,15 +103,15 @@ export default class StatusBar extends React.Component {
                 </div>
 
                 <div className="sb-child">
-                    <CopyToClipboard text={config.url + location} onCopy={() => this.setState({snackbarIsActive: true })}>
-                        <span id="location">{location === "/" ? "New Paste" : location.substr(1)}</span>
+                    <CopyToClipboard text={config.url + router} onCopy={() => this.setState({snackbarIsActive: true })}>
+                        <span id="location">{router === "/" ? "New Paste" : router.substr(1)}</span>
                     </CopyToClipboard>
                 </div>
 
                 <span className="pls-arrow_right" />
 
                 <div className="justify-end">
-                    <div className={location == '/' || location == '/about' ? "hidden" : "status-container"}>
+                    <div className={router == '/' || router == '/about' ? "hidden" : "status-container"}>
                         <span className='status-label'>{views} views</span>
                         <span className="pls-arrow_left" />
                         <span className='status-label'>{chars} chars</span>

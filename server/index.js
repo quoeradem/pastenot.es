@@ -9,8 +9,9 @@ import rootReducer from '../shared/reducers';
 import * as Actions from '../shared/actions';
 
 /* Routing imports */
-import {RouterContext, match} from 'react-router';
-import routes from '../shared/routes';
+import {RouterContext, match, useRouterHistory} from 'react-router';
+import {createMemoryHistory, useQueries} from 'history';
+import createRoutes from '../shared/routes';
 import createLocation from 'history/lib/createLocation';
 
 /* Koa imports */
@@ -44,7 +45,10 @@ app.use(apiRouter.routes());
 /* Render initial html + state */
 app.use(function *() {
     const store = applyMiddleware(promiseMiddleware)(createStore)(rootReducer);
-    const location = createLocation(this.request.url);
+
+    let history = useRouterHistory(useQueries(createMemoryHistory))();
+    let routes = createRoutes(history);
+    let location = history.createLocation(this.request.url);
 
     var resolver = Promise.defer();
 

@@ -19,23 +19,26 @@ export default class AppView extends React.Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        // update URL when "location" state changes
-        let curPath = this.props.state.location
-        let newPath = nextProps.state.location;
+        let cur_path = this.props.state.router;
+        let new_path = nextProps.state.router;
+        let locState = nextProps.location.state;
 
-        // FIXME: this.props.history is deprecated :: http://tiny.cc/router-contextchanges
-        if(newPath != curPath) this.props.history.push(newPath);
+        if(new_path != cur_path) {
+            browserHistory.push(new_path);
+            switch(new_path) {
+                case "/":
+                    if(!nextProps.state.isCopy)
+                        this.props.dispatch(Actions.newPaste());
+                    break;
 
-        // update redux state when route changes -- i.e. back button
-        let newRoute = nextProps.state.router;
-        if(curPath != newRoute) {
-            let id = newRoute.substr(1);
-            if(newRoute === "/") {
-                this.props.dispatch(Actions.newPaste());
-            } else if(id === "about") {
-                this.props.dispatch(Actions.aboutNav());
-            } else {
-                this.props.dispatch(Actions.getPaste(id));
+                case "/about":
+                    this.props.dispatch(Actions.aboutNav());
+                    break;
+
+                default:
+                    let id = new_path.substr(1);
+                    this.props.dispatch(Actions.getPaste(id));
+                    break;
             }
         }
     }

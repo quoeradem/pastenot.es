@@ -62,10 +62,13 @@ export function toggleReadOnly() { return {
     type: 'TOGGLE_READONLY',
 }}
 
-export function updateRouter(router) { return {
-    type: 'UPDATE_ROUTER',
-    router
-}}
+export function updateRouter(router) {
+    let location = router.pathname;
+    return {
+        type: 'UPDATE_ROUTER',
+        location
+    }
+}
 
 export function viewText() { return {
     type: 'VIEW_TEXT',

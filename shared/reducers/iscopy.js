@@ -1,24 +1,17 @@
 import {ABOUT_NAV, COPY_PASTE, GET_PASTE, NEW_PASTE, SAVE_PASTE} from '../actions';
 
-export default function location(state = "/", action) {
+export default function isCopy(state = false, action) {
     switch(action.type) {
-    case 'ABOUT_NAV':
-        return "/about";
-
     case 'COPY_PASTE':
-        return "/";
+        return true;
 
+    case 'ABOUT_NAV':
     case 'GET_PASTE':
-        return "/" + action.res.id;
-
     case 'NEW_PASTE':
-        return "/";
-
     case 'SAVE_PASTE':
-        return "/" + action.res.id;
+        return false;
 
     default:
         return state;
     }
-    
 }
