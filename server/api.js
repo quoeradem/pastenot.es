@@ -11,17 +11,17 @@ import config from '../shared/config';
 mongoose.connect(config.mongoURI);
 
 export default function routes(router) {
-    router.get('/about', function *(next) { /* GET :: retrieve about page */
+    router.get('/about', async (ctx) => { /* GET :: retrieve about page */
         const aboutContent = fs.readFileSync('./assets/about.md', {encoding: 'utf-8'});
-        this.body = JSON.stringify({kind: "paste#about", content: aboutContent});
+        ctx.body = JSON.stringify({kind: "paste#about", content: aboutContent});
     })
 
-    router.get('/paste/v1/:id', function *(next) { /* GET :: retrieve paste */
-        let id = this.params.id;
+    router.get('/paste/v1/:id', async (ctx, next) => { /* GET :: retrieve paste */
+        let id = ctx.params.id;
 
         if(id === 'undefined') {
-            this.status = 404;
-            this.body = "Paste not found m8";
+            ctx.body = "Paste not found m8";
+            ctx.status = 404;
         } else {
             var resolver = Promise.defer();
 
@@ -39,13 +39,13 @@ export default function routes(router) {
                     }))
                 }
             });
-            this.body = yield resolver.promise;
+            ctx.body = await resolver.promise;
         }
     })
 
-    router.post('/paste/v1/paste', function *(next) { /* POST :: save paste */
-        let content = this.request.body.content;
-        let language = this.request.body.language;
+    router.post('/paste/v1/paste', async (ctx, next) => { /* POST :: save paste */
+        let content = ctx.request.body.content;
+        let language = ctx.request.body.language;
 
         let lc = content.split(/\n/).length; // CM uses LF for linebreaks, not CRLF.
         let cc = content.length - lc + 1;
@@ -69,8 +69,8 @@ export default function routes(router) {
         }
 
         if(cc < 5) {
-            this.status = 400;
-            this.body = "Paste is too short."
+            ctx.body = "Paste is too short."
+            ctx.status = 400;
         } else {
             var resolver = Promise.defer();
             getUUID(2, 5, function(uuid) {
@@ -87,6 +87,6 @@ export default function routes(router) {
                 }))
             });
         }
-        this.body = yield resolver.promise;
+        ctx.body = await resolver.promise;
     })
 }

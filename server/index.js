@@ -18,6 +18,7 @@ import createLocation from 'history/lib/createLocation';
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
+import convert from 'koa-convert';
 var serve = require('koa-static-folder');
 
 /* Promise imports */
@@ -27,12 +28,12 @@ import promiseMiddleware from '../shared/lib/promiseMiddleware';
 import config from '../shared/config';
 
 /* init Koa server */
-const app = Koa();
+const app = new Koa();
 app.use(bodyParser());
 
 /* serve static "assets" and "dist" directories */
-app.use(serve('./assets'));
-app.use(serve('./dist'));
+app.use(convert(serve('./assets')));
+app.use(convert(serve('./dist')));
 
 /* load initial html */
 const index = fs.readFileSync('./assets/index.html', {encoding: 'utf-8'});
@@ -43,12 +44,12 @@ require('./api').default((apiRouter));
 app.use(apiRouter.routes());
 
 /* Render initial html + state */
-app.use(function *() {
+app.use(async (ctx, next) => {
     const store = applyMiddleware(promiseMiddleware)(createStore)(rootReducer);
 
     let history = useRouterHistory(useQueries(createMemoryHistory))();
     let routes = createRoutes(history);
-    let location = history.createLocation(this.request.url);
+    let location = history.createLocation(ctx.request.url);
 
     var resolver = Promise.defer();
 
@@ -61,13 +62,13 @@ app.use(function *() {
         );
 
         if(err) {
-            this.status = 500;
-            this.body = err.message;
+            ctx.body = err.message;
+            ctx.status = 500;
         } else if(redirectLocation) {
-            this.redirect(redirectLocation.pathname + redirectLocation.search);
+            ctx.redirect(redirectLocation.pathname + redirectLocation.search);
         } else if(renderProps == null) {
-            this.status = 404;
-            this.body = "not found";
+            ctx.body = "not found";
+            ctx.status = 404;
         } else {
             getReduxPromise().then(() => {
                 let markup = renderToString(InitialComponent);
@@ -92,7 +93,7 @@ app.use(function *() {
             }
 	    }
     });
-    this.body = yield resolver.promise;
+    ctx.body = await resolver.promise;
 });
 
 export default app;
