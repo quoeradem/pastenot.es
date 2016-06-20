@@ -27,7 +27,13 @@ export function copyPaste() { return {
 export function getPaste(id) { return {
     type: 'GET_PASTE',
     promise: fetch(`${config.url}/api/paste/v1/${id}`).then(function(response) {return response.json()})
+}}
 
+export function putPaste(id) { return {
+    type: 'GET_PASTE',
+    promise: fetch(`${config.url}/api/paste/v1/${id}`, {
+        method: 'PUT',
+    }).then(function(response) {return response.json()})
 }}
 
 export function newPaste() { return {

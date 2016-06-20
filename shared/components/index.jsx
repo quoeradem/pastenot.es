@@ -37,7 +37,7 @@ export default class AppView extends React.Component {
 
                 default:
                     let id = new_path.substr(1);
-                    this.props.dispatch(Actions.getPaste(id));
+                    this.props.dispatch(Actions.putPaste(id));
                     break;
             }
         }
