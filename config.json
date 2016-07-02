@@ -5,5 +5,11 @@
     "editor": {
         "theme": "material",
         "indent": 4
-    }
+    },
+    "auth" : {
+        "clientID"      : "",
+        "clientSecret"  : "",
+        "callbackURL"   : "http://localhost:8080/auth/github/callback"
+    },
+    "secret": ""
 }

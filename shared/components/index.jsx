@@ -11,6 +11,8 @@ import Toolbar from './toolbar.jsx';
 import StatusBar from "./statusbar.jsx";
 import Editor from './editor.jsx';
 
+import config from '../config';
+
 @connect(state => ({state: state}))
 export default class AppView extends React.Component {
     static fetchData({query, params, store}) {
@@ -43,16 +45,29 @@ export default class AppView extends React.Component {
         }
     }
 
+    handleMessage = (e) => {
+        if(e.origin === config.url) {
+            let code = e.data.code;
+            if(typeof code != 'undefined') {
+                this.props.dispatch(Actions.setAuthCode(code));
+                this.props.dispatch(Actions.getAuthToken(code));
+            }
+        }
+    }
+
+    componentDidMount = () => {window.addEventListener('message', this.handleMessage)}
+
 	render() {
         const { state, dispatch } = this.props;
 		return (
 			<div id="app-view">
 				<Toolbar {...bindActionCreators(Actions, dispatch)} />
                 <div id="container">
-                     <main className="main">
-                    <Editor {...bindActionCreators(Actions, dispatch)} />
+                    <main className="main">
+                        <Editor {...bindActionCreators(Actions, dispatch)} />
                     </main>
                     <StatusBar {...bindActionCreators(Actions, dispatch)} />
+                    {this.props.children}
                 </div>
 			</div>
 		);

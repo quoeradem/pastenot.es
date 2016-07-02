@@ -7,6 +7,8 @@ import content from './content';
 import router from './router';
 import meta from './meta';
 import isCopy from './iscopy';
+import auth from './auth';
+import user from './user';
 
 const rootReducer = combineReducers({
     content: content,
@@ -14,7 +16,9 @@ const rootReducer = combineReducers({
     mode: mode,
     readOnly: readOnly,
     router: router,
-    isCopy: isCopy
+    isCopy: isCopy,
+    auth: auth,
+    user: user
 });
 
 export default rootReducer;

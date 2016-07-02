@@ -58,6 +58,11 @@ export default class Toolbar extends React.Component {
                         <Button className="icon-info_outline mdl-iconbutton" />
                     </Link>
                 </div></Tooltip>
+                <Tooltip label="Login" position="right"><div className="toolbar-child">
+                    <Link to="/auth/github">
+                        <Button className="icon-exit_to_app mdl-iconbutton" />
+                    </Link>
+                </div></Tooltip>
             </div>
         );
     }

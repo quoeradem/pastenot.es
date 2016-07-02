@@ -7,11 +7,13 @@ var pasteSchema = new Schema({
     content: String,
     language: String,
     meta: {
-        created: String,
         char_count: Number,
         line_count: Number,
         views: Number,
     },
+    status: String,
+    created: String,
+    user: String,
 });
 
 pasteSchema.pre('save', async function (next) {

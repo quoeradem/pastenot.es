@@ -43,6 +43,11 @@ const apiRouter = new Router({ prefix: "/api" });
 require('./api').default((apiRouter));
 app.use(apiRouter.routes());
 
+/* Mount Auth routes */
+const authRouter = new Router();
+require('./auth').default((authRouter));
+app.use(authRouter.routes());
+
 /* Render initial html + state */
 app.use(async (ctx, next) => {
     const store = applyMiddleware(promiseMiddleware)(createStore)(rootReducer);
