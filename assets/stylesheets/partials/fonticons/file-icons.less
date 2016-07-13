@@ -1,0 +1,97 @@
+@font-face {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  src: url("../../../fonts/fontawesome.woff2") format("woff");
+}
+
+@font-face {
+  font-family: FontMfizz;
+  src: url("../../../fonts/mfizz.woff2") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: icomoon;
+  src: url("../../../fonts/icomoon.woff2") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: devicons;
+  src: url("../../../fonts/devicons.woff2") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "file-icons";
+  src: url("../../../fonts/file-icons-v1.7.15.woff2") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Octicons Regular";
+  src: url("../../../fonts/octicons.woff2") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* icon family classes */
+.mf {font-family: "FontMfizz"; font-size: small; text-align: center;}
+.fa {font-family: "FontAwesome"; font-size: small; text-align: center;}
+.file-icons {font-family: "file-icons"; font-size: large; text-align: center; top: 2px;}
+.octicons {font-family: "Octicons Regular"; font-size: medium; text-align: center;}
+.devicons {font-family: "devicons"; font-size: large; text-align: center; top: 3px;}
+
+/* icon color classes */
+.medium-blue {color: #6A9FB5;}
+.medium-green {color: #90A959;}
+.medium-maroon {color: #8F5536;}
+.medium-yellow {color: #F4BF75;}
+.medium-orange {color: #D28445;}
+.medium-red {color: #AC4142;}
+.dark-blue {color: darken(#6A9FB5, 15%);}
+.dark-yellow {color: darken(#F4BF75, 15%);}
+.dark-red {color: darken(#AC4142, 15%);}
+.dark-pink {color: darken(#F0C, 15%);}
+.light-pink {color: lighten(#F0C, 15%);}
+.light-red {color: lighten(#AC4142, 15%);}
+
+/* misc icon definitions */
+.file-icon_chevron_right:before {.octicons; content: "\f078"; font-size: 12px;}
+.file-icon_chevron_down:before {.octicons; content: "\f0a3"; font-size: 12px;}
+.file-icon_repo:before {.octicons; content: "\f001";}
+
+/* file icon definitions */
+.file-icon_txt:before {.octicons; content: "\f011"; .medium-blue;}
+.file-icon_c:before {.mf; content: "\f106"; .medium-blue;}
+.file-icon_cpp:before {.mf; content: "\f10b"; .medium-blue}
+.file-icon_cmake:before {.file-icons; content: "\e93f"; font-size: 14px; top: 1px; .medium-green;}
+.file-icon_coffee:before {.fa; content: "\f0f4"; .medium-maroon;}
+.file-icon_config:before {.octicons; content: "\f07c"; .medium-yellow;}
+.file-icon_css:before {.fa; content: "\f13c"; .medium-blue;}
+.file-icon_diff:before {.file-icons; content: "\e960"; font-size: 15px; .medium-orange;}
+.file-icon_markdown:before {.octicons; content: "\f0c9"; .medium-blue;}
+.file-icon_html:before {.fa; content: "\f13b"; .medium-orange;}
+.file-icon_http:before {.octicons; content: "\f096"; .medium-red;}
+.file-icon_js:before {.mf; content: "\f128"; font-size: medium; .medium-yellow}
+.file-icon_jsx:before {.file-icons; content: "\f101"; font-size: 14px; .medium-blue}
+.file-icon_json:before {.octicons; content: "\f096"; .medium-yellow;}
+.file-icon_less:before {.fa; content: "\f13c"; .dark-blue;}
+.file-icon_mathematica:before {.file-icons; content: "\e990"; font-size: 16px; .dark-red;}
+.file-icon_mysql:before {.mf; content: "\f10e"; left: 3px;}
+.file-icon_objc:before {.mf; content: "\f106"; .medium-blue;}
+.file-icon_perl:before {.mf; content: "\f142"; .medium-blue;}
+.file-icon_php:before {.file-icons; content: "\f147"; font-size: 14px; left: 1px; .dark-blue;}
+.file-icon_python:before {.mf; content: "\f14c"; font-size: medium; left: 1px; .dark-blue;}
+.file-icon_ruby:before {.octicons; content: "\f047"; .dark-red;}
+.file-icon_sass:before {.devicons; content: "\e64b"; .dark-pink;}
+.file-icon_scss:before {.devicons; content: "\e64b"; .light-pink;}
+.file-icon_shell:before {.octicons; content: "\f0c8"; .dark-yellow;}
+.file-icon_sql:before {.mf; content: "\f10e"; left: 3px;}
+.file-icon_swift:before {.devicons; content: "\e655"; font-size: large; .medium-green;}
+.file-icon_yaml:before {.octicons; content: "\f096"; .light-red;}

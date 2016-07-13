@@ -10,6 +10,7 @@ import * as Actions from '../actions';
 import Toolbar from './toolbar.jsx';
 import StatusBar from "./statusbar.jsx";
 import Editor from './editor.jsx';
+import Drawer from './drawer';
 
 import config from '../config';
 
@@ -25,6 +26,9 @@ export default class AppView extends React.Component {
         let new_path = nextProps.state.router;
         let locState = nextProps.location.state;
 
+        if(new_path === cur_path && cur_path === '/' && locState === 'new')
+            this.props.dispatch(Actions.newPaste());
+
         if(new_path != cur_path) {
             browserHistory.push(new_path);
             switch(new_path) {
@@ -38,7 +42,7 @@ export default class AppView extends React.Component {
                     break;
 
                 default:
-                    let id = new_path.substr(1);
+                    let id = new_path.charAt(0) === "/" ? new_path.substr(1) : new_path;
                     this.props.dispatch(Actions.putPaste(id));
                     break;
             }
@@ -61,13 +65,13 @@ export default class AppView extends React.Component {
         const { state, dispatch } = this.props;
 		return (
 			<div id="app-view">
+                <Drawer {...bindActionCreators(Actions, dispatch)} />
 				<Toolbar {...bindActionCreators(Actions, dispatch)} />
                 <div id="container">
                     <main className="main">
-                        <Editor {...bindActionCreators(Actions, dispatch)} />
+                        {this.props.children}
                     </main>
                     <StatusBar {...bindActionCreators(Actions, dispatch)} />
-                    {this.props.children}
                 </div>
 			</div>
 		);

@@ -9,6 +9,7 @@ import meta from './meta';
 import isCopy from './iscopy';
 import auth from './auth';
 import user from './user';
+import ui from './ui';
 
 const rootReducer = combineReducers({
     content: content,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
     router: router,
     isCopy: isCopy,
     auth: auth,
-    user: user
+    user: user,
+    ui: ui
 });
 
 export default rootReducer;

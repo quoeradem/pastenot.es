@@ -3,12 +3,21 @@ import {browserHistory} from 'react-router';
 import {connect} from 'react-redux';
 import * as Actions from '../actions';
 
+import cookie from 'react-cookie';
+
 import config from '../config';
 
 @connect(state => ({state: state}))
 export default class AuthHandler extends React.Component {
     // TODO: use componentwillmount instead?
     componentDidMount = async () => {
+        if(this.props.location.state === 'logout') {
+            // initiate logout -- invalid JWT --- remove cookie --- reset user state --- etc
+            // FIXME: add identifier so state isn't lost upon URL change to "/"?
+            await cookie.remove('token');
+            return browserHistory.replace("/");
+        }
+
         /* Request user profile using JWT cookie :
            returns either valid 'profile' object or 'error' object */
         let profile = await fetch("/auth/verify", {
@@ -27,6 +36,7 @@ export default class AuthHandler extends React.Component {
 
             let query = response_type + client_id + redirect_uri;
             window.open("https://github.com/login/oauth/authorize" + query, "Login with GitHub", "height=600, width=450");
+            return browserHistory.replace("/");
         }
     }
 

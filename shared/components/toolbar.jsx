@@ -16,51 +16,58 @@ export default class Toolbar extends React.Component {
         this.props.copyPaste();
     }
 
+    toggleDrawer = () => {
+        this.props.toggleDrawer();
+    }
+
     render() {
         return (
             <div id="toolbar">
+                <Tooltip label="Toggle Sidebar" position="right"><div className="toolbar-child">
+                    <Button className="mdl-iconbutton" onClick={this.toggleDrawer}><i className="material-icons">menu</i></Button>
+                </div></Tooltip>
+
                 <Tooltip label="New Paste" position="right"><div className="toolbar-child">
                     <Link to={{pathname: "/", state: "new"}}>
-                        <Button className="icon-note_add mdl-iconbutton" />
+                        <Button className="mdl-iconbutton"><i className="material-icons">note_add</i></Button>
                     </Link>
                 </div></Tooltip>
 
                 <Tooltip label="Save Paste" position="right"><div className="toolbar-child">
-                    <Button className="icon-save mdl-iconbutton"
+                    <Button className="mdl-iconbutton"
                         onClick={this.savePaste}
                         disabled={this.props.state.router != '/'}
-                    />
+                    ><i className="material-icons">save</i></Button>
                 </div></Tooltip>
 
                 <Tooltip label="Duplicate & Edit" position="right"><div className="toolbar-child">
-                    <Button className="icon-content_copy mdl-iconbutton"
+                    <Button className="mdl-iconbutton"
                         onClick={this.copyPaste}
                         disabled={this.props.state.router == '/'}
-                    />
+                    ><i className="material-icons">content_copy</i></Button>
                 </div></Tooltip>
 
                 <Tooltip label="View Text" position="right"><div className="toolbar-child">
                     <Link to={"/t" + this.props.state.router}>
-                        <Button className="icon-text_format mdl-iconbutton"
+                        <Button className="mdl-iconbutton"
                             disabled={this.props.state.router == '/'}
-                        />
+                        ><i className="material-icons">text_format</i></Button>
                     </Link>
-                </div></Tooltip>
-
-                <Tooltip label="Link" position="right"><div className="toolbar-child">
-                    <Button className="icon-insert_link mdl-iconbutton"
-                        disabled={this.props.state.router == '/'}
-                    />
                 </div></Tooltip>
 
                 <Tooltip label="About" position="right"><div className="toolbar-child">
                     <Link to="/about">
-                        <Button className="icon-info_outline mdl-iconbutton" />
+                        <Button className="mdl-iconbutton">
+                            <i className="material-icons">info_outline</i>
+                        </Button>
                     </Link>
                 </div></Tooltip>
-                <Tooltip label="Login" position="right"><div className="toolbar-child">
-                    <Link to="/auth/github">
-                        <Button className="icon-exit_to_app mdl-iconbutton" />
+
+            <Tooltip label={this.props.state.user.login === '' ? "Login" : "Logout"} position="right"><div className="toolbar-child">
+                    <Link to={{pathname: "/auth/github", state: this.props.state.user.login === '' ? "login" : "logout"}}>
+                        <Button className="mdl-iconbutton">
+                            <i className="material-icons">exit_to_app</i>
+                        </Button>
                     </Link>
                 </div></Tooltip>
             </div>

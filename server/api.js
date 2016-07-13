@@ -45,6 +45,8 @@ export default function routes(router) {
             let items = pastes.map(arr => {return {
                 kind: "paste#note",
                 id: arr.id,
+                content: arr.content.substring(0, 200),
+                language: arr.language,
                 meta: arr.meta,
                 status: arr.status,
                 created: arr.created
@@ -58,7 +60,7 @@ export default function routes(router) {
             });
         } else { // User was either invalid or not provided
             ctx.body = "An error in MY api call?";
-            ctx.status = "403";
+            ctx.status = 403;
         }
     })
 

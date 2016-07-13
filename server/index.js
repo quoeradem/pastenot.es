@@ -25,6 +25,8 @@ var serve = require('koa-static-folder');
 var Promise = require('bluebird');
 import promiseMiddleware from '../shared/lib/promiseMiddleware';
 
+var jwt = require('jsonwebtoken');
+
 import config from '../shared/config';
 
 /* init Koa server */
@@ -57,6 +59,12 @@ app.use(async (ctx, next) => {
     let location = history.createLocation(ctx.request.url);
 
     var resolver = Promise.defer();
+
+    // Check for JWT and set user state if token is valid
+    let token = await ctx.cookies.get('token');
+    var decoded; try {decoded = jwt.verify(token, config.secret)} catch(err) {};
+    if(typeof decoded !== 'undefined')
+        store.dispatch(Actions.setUser(decoded.login, decoded.avatar_url));
 
     match({routes, location}, (err, redirectLocation, renderProps) => {
         // initialize initial component with access to redux store

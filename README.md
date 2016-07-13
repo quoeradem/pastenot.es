@@ -46,7 +46,8 @@ Todo:
 * Improve API backend.
 * Implement `Immutable.js`.
 * Add key maps to improve usability.
-* User authentication via GitHub.
+* ~~User authentication via GitHub.~~
+* Fix auth flow.
 * Improve syntax highlighting.
 * `¯\_(ツ)_/¯`
 

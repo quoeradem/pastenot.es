@@ -1,0 +1,72 @@
+@import "../modules/_variables";
+
+.drawer {
+    background: @ui-base02;
+    max-height: 100vh;
+    width: 240px;
+}
+
+.hidden {max-width: 0px;}
+
+.subheading {
+    color: #fff;
+    padding-left: 16px;
+}
+
+.root-item {
+    font-weight: 500;
+    font-size: 13px;
+    padding-left: 4px;
+}
+
+// fix chevron icon spacing
+.arrow { padding-right: 3px; }
+
+/* Header container + children */
+.drawer-header {
+    height: 60px;
+    margin-top: 10px;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+
+    margin: 0px 5px 0px 5px;
+    float: left;
+}
+
+.userlogin {
+    color: #aaaaaa;
+
+    font-size: 12.5px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+}
+
+#userStats {
+    color: @ui-blue;
+    font-size: 12px;
+}
+
+/* Recent pastes container + children */
+.recent-container {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: 100%;
+}
+
+.paste-item {
+    color: #aaaaaa;
+    font-size: 13px;
+    font-weight: 300;
+
+    padding-left: 32px;
+    padding-bottom: 2px;
+
+    &:hover {color: #fff;}
+    a { text-decoration: none; color: inherit; font: inherit;}
+}
+
+.paste-group { padding-left: 16px !important; }

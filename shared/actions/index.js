@@ -8,6 +8,7 @@ export const ABOUT_NAV       = 'ABOUT_NAV';
 export const COPY_PASTE      = 'COPY_PASTE';
 export const GET_AUTH_TOKEN  = 'GET_AUTH_TOKEN';
 export const GET_PASTE       = 'GET_PASTE';
+export const GET_PASTES      = 'GET_PASTES';
 export const NEW_PASTE       = 'NEW_PASTE';
 export const SAVE_PASTE      = 'SAVE_PASTE';
 export const SET_AUTH_CODE   = 'SET_AUTH_CODE';
@@ -15,6 +16,7 @@ export const SET_CONTENT     = 'SET_CONTENT';
 export const SET_MODE        = 'SET_MODE';
 export const SET_LINEC       = 'SET_LINEC';
 export const SET_USER        = 'SET_USER';
+export const TOGGLE_DRAWER      = 'TOGGLE_DRAWER';
 export const TOGGLE_READONLY = 'TOGGLE_READONLY';
 export const UPDATE_ROUTER   = 'UPDATE_ROUTER';
 export const VIEW_TEXT       = 'VIEW_TEXT';
@@ -35,10 +37,9 @@ export function getAuthToken(code) { return {
         credentials: 'same-origin',
         method: 'POST',
         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-        body: JSON.stringify({ code: code})
+        body: JSON.stringify({code: code})
     }).then((response) => response.json())
     .then((data) => {
-        console.log("DATA: ", data.token);
         cookie.save('token', data.token);
         return data.token;
     })
@@ -47,6 +48,16 @@ export function getAuthToken(code) { return {
 export function getPaste(id) { return {
     type: 'GET_PASTE',
     promise: fetch(`${config.url}/api/paste/v1/${id}`).then(function(response) {return response.json()})
+}}
+
+export function getPastes() { return {
+    type: 'GET_PASTES',
+    promise: fetch(`${config.url}/api/paste/v1/paste/history`, {
+        credentials: 'include',
+        method: 'GET',
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+    }).then(function(response) {
+        return response.json()})
 }}
 
 export function putPaste(id) { return {
@@ -94,6 +105,10 @@ export function setUser(login, avatar) { return {
     type: 'SET_USER',
     login,
     avatar
+}}
+
+export function toggleDrawer() { return {
+    type: 'TOGGLE_DRAWER',
 }}
 
 export function toggleReadOnly() { return {

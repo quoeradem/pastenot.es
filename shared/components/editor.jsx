@@ -4,7 +4,11 @@ import {connect} from 'react-redux';
 var Codemirror = require('react-codemirror');
 import config from '../config';
 
-@connect(state => ({readOnly: state.readOnly, mode: state.mode, content: state.content}))
+import * as Actions from '../actions';
+import {bindActionCreators} from 'redux';
+
+@connect(state => ({readOnly: state.readOnly, mode: state.mode, content: state.content}),
+    dispatch => bindActionCreators(Actions, dispatch))
 export default class Editor extends React.Component {
 
     /* Sync content to redux state when CM loses focus */
