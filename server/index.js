@@ -61,7 +61,7 @@ app.use(async (ctx, next) => {
     var resolver = Promise.defer();
 
     // Check for JWT and set user state if token is valid
-    let token = await ctx.cookies.get('token');
+    let token = await ctx.cookies.get('authtoken');
     var decoded; try {decoded = jwt.verify(token, config.secret)} catch(err) {};
     if(typeof decoded !== 'undefined')
         store.dispatch(Actions.setUser(decoded.login, decoded.avatar_url));

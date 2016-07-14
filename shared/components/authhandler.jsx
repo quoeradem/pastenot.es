@@ -14,7 +14,8 @@ export default class AuthHandler extends React.Component {
         if(this.props.location.state === 'logout') {
             // initiate logout -- invalid JWT --- remove cookie --- reset user state --- etc
             // FIXME: add identifier so state isn't lost upon URL change to "/"?
-            await cookie.remove('token');
+            await cookie.remove('authtoken');
+            this.props.dispatch(Actions.userLogout());
             return browserHistory.replace("/");
         }
 

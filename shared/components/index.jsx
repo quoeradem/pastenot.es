@@ -49,12 +49,14 @@ export default class AppView extends React.Component {
         }
     }
 
-    handleMessage = (e) => {
+    handleMessage = async (e) => {
         if(e.origin === config.url) {
             let code = e.data.code;
             if(typeof code != 'undefined') {
-                this.props.dispatch(Actions.setAuthCode(code));
-                this.props.dispatch(Actions.getAuthToken(code));
+                await this.props.dispatch(Actions.setAuthCode(code));
+                await this.props.dispatch(Actions.getAuthToken(code));
+                await this.props.dispatch(Actions.userLogin());
+                await this.props.dispatch(Actions.getPastes());
             }
         }
     }

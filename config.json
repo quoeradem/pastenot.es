@@ -1,7 +1,7 @@
 {
     "url": "http://localhost:8080",
     "port": 3000,
-    "mongoURI": "mongodb://localhost/test",
+    "mongoURI": "mongodb://localhost/paste",
     "editor": {
         "theme": "material",
         "indent": 4

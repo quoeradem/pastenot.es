@@ -16,9 +16,11 @@ export const SET_CONTENT     = 'SET_CONTENT';
 export const SET_MODE        = 'SET_MODE';
 export const SET_LINEC       = 'SET_LINEC';
 export const SET_USER        = 'SET_USER';
-export const TOGGLE_DRAWER      = 'TOGGLE_DRAWER';
+export const TOGGLE_DRAWER   = 'TOGGLE_DRAWER';
 export const TOGGLE_READONLY = 'TOGGLE_READONLY';
 export const UPDATE_ROUTER   = 'UPDATE_ROUTER';
+export const USER_LOGIN      = 'USER_LOGIN';
+export const USER_LOGOUT     = 'USER_LOGOUT';
 export const VIEW_TEXT       = 'VIEW_TEXT';
 
 /* Action Creators */
@@ -40,7 +42,7 @@ export function getAuthToken(code) { return {
         body: JSON.stringify({code: code})
     }).then((response) => response.json())
     .then((data) => {
-        cookie.save('token', data.token);
+        cookie.save('authtoken', data.token);
         return data.token;
     })
 }}
@@ -122,6 +124,18 @@ export function updateRouter(router) {
         location
     }
 }
+
+export function userLogin() { return {
+    type: 'USER_LOGIN',
+    promise: fetch(`${config.url}/auth/verify`, {
+        credentials: 'include',
+        method: 'GET'
+    }).then((response) => {return response.json()})
+}}
+
+export function userLogout() { return {
+    type: 'USER_LOGOUT'
+}}
 
 export function viewText() { return {
     type: 'VIEW_TEXT',

@@ -52,15 +52,14 @@ export default class Drawer extends React.Component {
     componentDidMount = () => this.props.getPastes()
 
     componentWillReceiveProps = (nextProps) => {
-        let next = nextProps.state.user.pastes;
-        let cur = this.props.state.user.pastes;
-
-        if(cur != next)
-            this.getPastes(next)
+        /* Update list of recent pastes */
+        let newPastes = nextProps.state.user.pastes;
+        if(this.props.state.user.pastes != newPastes) this.getPastes(newPastes);
     }
 
     getPastes = async (pastes) => {
         let o = {};
+        let _children = [];
 
         pastes.map((arr, index) => {
             let key = moment(arr.created).format("MMM Do YYYY");
@@ -79,8 +78,9 @@ export default class Drawer extends React.Component {
                     </Tooltip>
                 </div>
             ));
-            await this.setState({children: this.state.children.concat(<DrawerItem key={date} title={date} children={items} />)})
+            _children.push(<DrawerItem key={date} title={date} children={items} />);
         }
+        this.setState({children: _children});
     }
 
     render() {
@@ -120,8 +120,7 @@ class DrawerItem extends React.Component {
     }
 
     handleClick = () => {
-        let open = !this.state.isOpen;
-        this.setState({isOpen: open});
+        this.setState({isOpen: !this.state.isOpen});
     }
 
     render() { return(

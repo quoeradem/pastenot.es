@@ -11,21 +11,23 @@ export default function routes(router) {
 
         // generate JWT
         let _token = jwt.sign({id: profile.id, login: profile.login, avatar_url: profile.avatar_url}, config.secret, {expiresIn: 86400});
-        ctx.body = JSON.stringify({token: _token});
+        let decoded = await jwt.verify(_token, config.secret);
+        ctx.body = await JSON.stringify({token: _token});
     })
 
     /* Verify JWT and return user profile */
     router.get('/auth/verify', async(ctx, next) => {
-        let token = await ctx.cookies.get('token');
+        let token = await ctx.cookies.get('authtoken');
+
         try {
-            var decoded = jwt.verify(token, config.secret);
-            ctx.body = JSON.stringify({
+            var decoded = await jwt.verify(token, config.secret);
+            ctx.body = await JSON.stringify({
                 kind: "paste#user",
                 login: decoded.login,
                 avatar_url: decoded.avatar_url
             })
         } catch(err) {
-            ctx.body = JSON.stringify({
+            ctx.body = await JSON.stringify({
                 "error": {
                     "errors": [{
                         "domain": "global",

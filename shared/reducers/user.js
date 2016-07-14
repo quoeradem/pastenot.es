@@ -1,4 +1,4 @@
-import {SET_USER, GET_PASTES} from '../actions';
+import {SET_USER, GET_PASTES, USER_LOGIN, USER_LOGOUT} from '../actions';
 
 export default function mode(state = {login: '', avatar: '', pastes: [], totalPastes: 0, totalViews: 0}, action) {
     switch(action.type) {
@@ -10,7 +10,15 @@ export default function mode(state = {login: '', avatar: '', pastes: [], totalPa
             avatar: action.avatar
         }
 
-    case 'LOGOUT':
+    case 'USER_LOGIN':
+        return {
+            ...state,
+            login: action.res.login,
+            avatar: action.res.avatar_url
+        }
+
+    case 'USER_LOGOUT':
+        state = {login: '', avatar: '', pastes: [], totalPastes: 0, totalViews: 0};
         return state;
 
     case 'GET_PASTES':

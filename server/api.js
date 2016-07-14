@@ -36,7 +36,7 @@ export default function routes(router) {
 
     router.get('/paste/v1/paste/history', async (ctx,next) => {
         // Read JWT from cookie, verify, and return user ID
-        let token = await ctx.cookies.get('token');
+        let token = await ctx.cookies.get('authtoken');
         var uid; try {uid = jwt.verify(token, config.secret).id} catch(err) {};
 
         if(typeof uid !== 'undefined') { // User is valid
