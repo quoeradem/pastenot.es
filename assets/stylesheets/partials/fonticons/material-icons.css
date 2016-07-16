@@ -27,32 +27,6 @@
     -webkit-font-smoothing: antialiased;
     /* Support for Safari and Chrome. */
     text-rendering: optimizeLegibility;
-
     /* Support for Firefox. */
     -moz-osx-font-smoothing: grayscale;
-
-    /* Support for IE. */
-    font-feature-settings: 'liga';
-}
-
-.icon-insert_link:before {
-    content: "\e900";
-}
-.icon-text_format:before {
-    content: "\e901";
-}
-.icon-info_outline:before {
-    content: "\e902";
-}
-.icon-exit_to_app:before {
-    content: "\e903";
-}
-.icon-note_add:before {
-    content: "\e904";
-}
-.icon-content_copy:before {
-    content: "\e905";
-}
-.icon-save:before {
-    content: "\e906";
 }

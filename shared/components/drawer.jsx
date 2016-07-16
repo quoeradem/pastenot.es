@@ -127,6 +127,7 @@ class DrawerItem extends React.Component {
         <div>
             <div className="paste-item paste-group" onClick={this.handleClick}>
                 <span className={this.state.isOpen ? "file-icon_chevron_down arrow" : "file-icon_chevron_right arrow"}/>
+                <i className="material-icons icon" style={{"font-size": "16px"}}>date_range</i>
                 {this.state.title}
             </div>
             {this.state.isOpen ? this.state.children : null}

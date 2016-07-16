@@ -1,7 +1,8 @@
 @import "../modules/_variables";
 
 .drawer {
-    background: @ui-base02;
+    font-family: @font-family;
+    background: @ui-base00;
     max-height: 100vh;
     width: 240px;
 }
@@ -11,16 +12,17 @@
 .subheading {
     color: #fff;
     padding-left: 16px;
+    padding-bottom: 4px;
 }
 
 .root-item {
     font-weight: 500;
     font-size: 13px;
-    padding-left: 4px;
 }
 
 // fix chevron icon spacing
-.arrow { padding-right: 3px; }
+.arrow { padding-right: 2px; }
+.icon { padding-right: 3px; }
 
 /* Header container + children */
 .drawer-header {
@@ -38,7 +40,7 @@
 }
 
 .userlogin {
-    color: #aaaaaa;
+    color: @ui-grey;
 
     font-size: 12.5px;
     font-weight: 300;
@@ -58,15 +60,17 @@
 }
 
 .paste-item {
-    color: #aaaaaa;
+    .noselect;
+    color: @ui-grey;
     font-size: 13px;
     font-weight: 300;
 
-    padding-left: 32px;
+    padding-left: 48px;
     padding-bottom: 2px;
 
     &:hover {color: #fff;}
     a { text-decoration: none; color: inherit; font: inherit;}
+    span {outline: none !important;} /* override mdl :selection outline */
 }
 
 .paste-group { padding-left: 16px !important; }

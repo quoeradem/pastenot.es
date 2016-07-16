@@ -3,7 +3,7 @@
 #toolbar {
   display: flex;
   flex-direction: column;
-  background: @ui-base02;
+  background: @ui-base00;
   border-right: 1px solid #000;
 }
 
@@ -13,11 +13,17 @@
 }
 
 .mdl-iconbutton {
-    color: @ui-base1;
+    .noselect;
+    color: @ui-base2;
     padding: 0px !important;
     min-width: 42px !important;
 
     &:disabled {
-        color: @ui-base0 !important;
+        color: @ui-base1 !important;
+    }
+
+    &:hover {
+        color: @ui-cyan !important;
+        background-color: @ui-base00 !important;    /* override mdl :hover bg fade */
     }
 }
