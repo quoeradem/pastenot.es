@@ -1,5 +1,4 @@
 var fs          = require('fs');
-var moment      = require('moment');
 var mongoose    = require('mongoose');
 var phonetic    = require('phonetic');
 var Promise     = require('bluebird');
@@ -20,8 +19,17 @@ export default function routes(router) {
     router.get('/paste/v1/:id', async (ctx, next) => {
         const paste = await Paste.findOne({id: ctx.params.id});
         if(paste == null) {
-            ctx.body = "Not found";
-            ctx.status = 404;
+            ctx.body = JSON.stringify({
+                "error": {
+                    "errors": [{
+                        "domain": "global",
+                        "reason": "notFound",
+                        "message": "Paste not found " + ctx.params.id,
+                    }],
+                    "code": 404,
+                    "message": "Paste not found " + ctx.params.id,
+                }
+            })
         } else {
             ctx.body = JSON.stringify({
                 kind: "paste#note",
@@ -67,8 +75,17 @@ export default function routes(router) {
     router.put('/paste/v1/:id', async (ctx, next) => {
         const paste = await Paste.findOneAndUpdate({id: ctx.params.id}, {$inc: {"meta.views": 1}});
         if(paste == null) {
-            ctx.body = "Not found";
-            ctx.status = 404;
+            ctx.body = JSON.stringify({
+                "error": {
+                    "errors": [{
+                        "domain": "global",
+                        "reason": "notFound",
+                        "message": "Paste not found " + ctx.params.id,
+                    }],
+                    "code": 404,
+                    "message": "Paste not found " + ctx.params.id,
+                }
+            })
         } else {
             ctx.body = JSON.stringify({
                 kind: "paste#note",
@@ -82,34 +99,37 @@ export default function routes(router) {
     })
 
     router.post('/paste/v1/paste', async (ctx, next) => {
-        let content  = ctx.request.body.content;
-        let language = ctx.request.body.language;
-        let lines    = content.split(/\n/).length; // Linebreaks will always be LF (never CRLF).
-        let chars    = content.length - lines + 1;
+        let content = ctx.request.body.content;
 
         // Read JWT from cookie, verify, and return user ID
-        let token = await ctx.cookies.get('token');
+        let token = await ctx.cookies.get('authtoken');
         var uid; try {uid = jwt.verify(token, config.secret).id} catch(err) {};
 
         var paste;
-
-        if(chars - 5 >>> 0 > 39995) {
-            ctx.body = "Invalid paste length. accepted values: 5 < length < 40000"
-            ctx.status = 400;
+        if(content.replace(/\s/g, '').length - 5 >>> 0 > 39995) {
+            ctx.body = JSON.stringify({
+                "error": {
+                    "errors": [{
+                        "domain": "global",
+                        "reason": "invalidParameter",
+                        "message": "Invalid length for content. Value must be within the range: [5, 40000]",
+                        "locationType": "parameter",
+                        "location": "content"
+                    }],
+                    "code": 400,
+                    "message": "Invalid length for content. Value must be within the range: [5, 40000]",
+                }
+            })
         } else if(typeof uid !== 'undefined') { // User is valid
             paste = await new Paste({
-                content: content, language: language,
-                meta: {char_count: chars, line_count: lines, views: 0},
-                status: "OK",
-                created: moment().toISOString(),
+                content: content,
+                language: ctx.request.body.language,
                 user: uid,
             }).save();
-        } else { // User was either invalid or not provided
+        } else { // User was either invalid or not provided -- save as anonymous.
             paste = await new Paste({
-                content: content, language: language,
-                meta: {char_count: chars, line_count: lines, views: 0},
-                status: "OK",
-                created: moment().toISOString(),
+                content: content,
+                language: ctx.request.body.language,
             }).save();
         }
 

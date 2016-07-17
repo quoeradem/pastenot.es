@@ -91,6 +91,12 @@ export default class StatusBar extends React.Component {
         this.setState({ snackbarIsActive: false });
     }
 
+    handleClick = (e) => {
+        let m = e.target.getBoundingClientRect();
+        if(m.top >= e.clientY || e.clientY >= m.top + m.height || m.left >= e.clientX || e.clientX >= m.left + m.width)
+            this.closeDialog()
+    }
+
 	render() {
         const { mode, router, chars, lines, views, dispatch } = this.props;
         let m = modes.find(m => m.mode === mode);
@@ -125,7 +131,7 @@ export default class StatusBar extends React.Component {
                     </div>
                 </div>
 
-                <Dialog open={this.state.open}>
+                <Dialog open={this.state.open} onCancel={this.closeDialog} onClick={this.handleClick}>
                     <input onChange={this.handleInput} value={this.state.value} />
 
                     <div className="child-container">

@@ -26,8 +26,10 @@ export default class AppView extends React.Component {
         let new_path = nextProps.state.router;
         let locState = nextProps.location.state;
 
-        if(new_path === cur_path && cur_path === '/' && locState === 'new')
+        if(new_path === cur_path && cur_path === '/' && locState === 'new') {
+            this.props.location.state = "";
             this.props.dispatch(Actions.newPaste());
+        }
 
         if(new_path != cur_path) {
             browserHistory.push(new_path);

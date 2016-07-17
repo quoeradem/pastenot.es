@@ -48,11 +48,11 @@ export default class Toolbar extends React.Component {
                 </div></Tooltip>
 
                 <Tooltip label="View Text" position="right"><div className="toolbar-child">
-                    <Link to={"/t" + this.props.state.router}>
                         <Button className="mdl-iconbutton"
-                            disabled={this.props.state.router == '/'}
-                        ><i className="material-icons">text_format</i></Button>
-                    </Link>
+                            disabled={this.props.state.router == '/'}>
+                        <Link to={"/t" + this.props.state.router} />
+                        <i className="material-icons">text_format</i></Button>
+
                 </div></Tooltip>
 
                 <Tooltip label="About" position="right"><div className="toolbar-child">

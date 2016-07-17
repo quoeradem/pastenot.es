@@ -32,7 +32,8 @@ export default class Editor extends React.Component {
             mode: this.props.mode,
             cursorHeight: !this.props.readOnly,
             styleActiveLine: true,
-            scrollbarStyle: "overlay"
+            scrollbarStyle: "overlay",
+            autofocus: true,
         };
         return (
             <Codemirror ref="editor"

@@ -7,7 +7,6 @@ import content from './content';
 import router from './router';
 import meta from './meta';
 import isCopy from './iscopy';
-import auth from './auth';
 import user from './user';
 import ui from './ui';
 
@@ -18,7 +17,6 @@ const rootReducer = combineReducers({
     readOnly: readOnly,
     router: router,
     isCopy: isCopy,
-    auth: auth,
     user: user,
     ui: ui
 });

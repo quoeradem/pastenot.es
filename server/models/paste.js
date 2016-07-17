@@ -1,17 +1,18 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 var phonetic = require('phonetic');
+var moment   = require('moment');
 
 var pasteSchema = new Schema({
     id: {type: String, unique: true},
     content: String,
     language: String,
     meta: {
-        char_count: Number,
-        line_count: Number,
-        views: Number,
+        chars: Number,
+        lines: Number,
+        views: {type: Number, default: 0},
     },
-    status: String,
+    status: {type: String, default: "OK"},
     created: String,
     user: String,
 });
@@ -21,6 +22,11 @@ pasteSchema.pre('save', async function (next) {
     let simplicity = 5;
 
     this.id = await getUUID(syllables, simplicity);
+    this.created = await moment().toISOString();
+
+    let lines = this.content.split(/\n/).length; // Linebreaks will always be LF (never CRLF).
+    this.meta.lines = lines;
+    this.meta.chars = this.content.length - lines + 1;
     next();
 
     async function getUUID(syllables, simplicity) {
