@@ -17,11 +17,12 @@ export const SET_MODE        = 'SET_MODE';
 export const SET_LINEC       = 'SET_LINEC';
 export const SET_USER        = 'SET_USER';
 export const TOGGLE_DRAWER   = 'TOGGLE_DRAWER';
+export const TOGGLE_MENU     = 'TOGGLE_MENU';
 export const TOGGLE_READONLY = 'TOGGLE_READONLY';
+export const TOGGLE_WRAP     = 'TOGGLE_WRAP';
 export const UPDATE_ROUTER   = 'UPDATE_ROUTER';
 export const USER_LOGIN      = 'USER_LOGIN';
 export const USER_LOGOUT     = 'USER_LOGOUT';
-export const VIEW_TEXT       = 'VIEW_TEXT';
 
 /* Action Creators */
 export function aboutNav() { return {
@@ -113,8 +114,16 @@ export function toggleDrawer() { return {
     type: 'TOGGLE_DRAWER',
 }}
 
+export function toggleMenu() { return {
+    type: 'TOGGLE_MENU',
+}}
+
 export function toggleReadOnly() { return {
     type: 'TOGGLE_READONLY',
+}}
+
+export function toggleWrap() { return {
+    type: 'TOGGLE_WRAP',
 }}
 
 export function updateRouter(router) {
@@ -135,8 +144,4 @@ export function userLogin() { return {
 
 export function userLogout() { return {
     type: 'USER_LOGOUT'
-}}
-
-export function viewText() { return {
-    type: 'VIEW_TEXT',
 }}

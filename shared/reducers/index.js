@@ -9,6 +9,7 @@ import meta from './meta';
 import isCopy from './iscopy';
 import user from './user';
 import ui from './ui';
+import isWrapped from './isWrapped';
 
 const rootReducer = combineReducers({
     content: content,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     readOnly: readOnly,
     router: router,
     isCopy: isCopy,
+    isWrapped: isWrapped,
     user: user,
     ui: ui
 });

@@ -20,39 +20,42 @@ export default class Toolbar extends React.Component {
         this.props.toggleDrawer();
     }
 
+    viewText = () => {
+        browserHistory.push("/t" + this.props.state.router);
+    }
+
     render() {
         return (
             <div id="toolbar">
-                <Tooltip label="Toggle Sidebar" position="right"><div className="toolbar-child">
+                <Tooltip label={<span>Toggle Sidebar<br />control + t</span>} position="right"><div className="toolbar-child">
                     <Button className="mdl-iconbutton" onClick={this.toggleDrawer}><i className="material-icons">menu</i></Button>
                 </div></Tooltip>
 
-                <Tooltip label="New Paste" position="right"><div className="toolbar-child">
+                <Tooltip label={<span>New Paste<br />control + n</span>} position="right"><div className="toolbar-child">
                     <Link to={{pathname: "/", state: "new"}}>
                         <Button className="mdl-iconbutton"><i className="material-icons">note_add</i></Button>
                     </Link>
                 </div></Tooltip>
 
-                <Tooltip label="Save Paste" position="right"><div className="toolbar-child">
+                <Tooltip label={<span>Save Paste<br />control + s</span>} position="right"><div className="toolbar-child">
                     <Button className="mdl-iconbutton"
                         onClick={this.savePaste}
                         disabled={this.props.state.router != '/'}
                     ><i className="material-icons">save</i></Button>
                 </div></Tooltip>
 
-                <Tooltip label="Duplicate & Edit" position="right"><div className="toolbar-child">
+                <Tooltip label={<span>Duplicate & Edit<br />control + d</span>} position="right"><div className="toolbar-child">
                     <Button className="mdl-iconbutton"
                         onClick={this.copyPaste}
                         disabled={this.props.state.router == '/'}
                     ><i className="material-icons">content_copy</i></Button>
                 </div></Tooltip>
 
-                <Tooltip label="View Text" position="right"><div className="toolbar-child">
-                        <Button className="mdl-iconbutton"
-                            disabled={this.props.state.router == '/'}>
-                        <Link to={"/t" + this.props.state.router} />
-                        <i className="material-icons">text_format</i></Button>
-
+                <Tooltip label={<span>View Text<br />control + shift + r</span>} position="right"><div className="toolbar-child">
+                    <Button className="mdl-iconbutton"
+                        onClick={this.viewText}
+                        disabled={this.props.state.router == '/'}
+                    ><i className="material-icons">text_format</i></Button>
                 </div></Tooltip>
 
                 <Tooltip label="About" position="right"><div className="toolbar-child">

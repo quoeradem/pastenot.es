@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {Dialog} from 'react-mdl/lib/Dialog';
 import {List, ListItem} from 'react-mdl/lib/List';
 import Snackbar from 'react-mdl/lib/Snackbar';
+import Tooltip from 'react-mdl/lib/Tooltip';
 
 import CopyToClipboard from 'react-copy-to-clipboard';
 
@@ -41,12 +42,11 @@ const modes = [
     { _index: 27,   label: "YAML",                  mode: "text/x-yaml" },
 ];
 
-@connect(state => ({mode: state.mode, router: state.router, chars: state.meta.chars, lines: state.meta.lines, views: state.meta.views}))
+@connect(state => ({mode: state.mode, router: state.router, chars: state.meta.chars, lines: state.meta.lines, views: state.meta.views, ui: state.ui, isWrapped: state.isWrapped}))
 export default class StatusBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false,
             children: [],
             value: "",
             snackbarIsActive: false,
@@ -63,7 +63,7 @@ export default class StatusBar extends React.Component {
 
     openDialog = (e) => {
         this.populate(modes);
-        this.setState({open: true});
+        this.props.toggleMenu();
     }
 
     handleInput = (e) => {
@@ -84,7 +84,8 @@ export default class StatusBar extends React.Component {
     }
 
     closeDialog = () => {
-        this.setState({open: false, value: ""});
+        this.setState({value: ""});
+        this.props.toggleMenu();
     }
 
     handleTimeout = () => {
@@ -97,8 +98,12 @@ export default class StatusBar extends React.Component {
             this.closeDialog()
     }
 
+    toggleWrap = (e) => {
+        this.props.toggleWrap();
+    }
+
 	render() {
-        const { mode, router, chars, lines, views, dispatch } = this.props;
+        const { mode, router, chars, lines, views, ui, isWrapped, dispatch } = this.props;
         let m = modes.find(m => m.mode === mode);
 
 		return (
@@ -125,13 +130,18 @@ export default class StatusBar extends React.Component {
                         <span className='status-label'>{lines} lines</span>
                     </div>
 
+                    <Tooltip label="Toggle linewrap" position="top">
+                    <i className={isWrapped ? "material-icons togglebutton active" : "material-icons togglebutton"}
+                        onClick={this.toggleWrap}>wrap_text</i>
+                    </Tooltip>
+
                     <span className="pls-arrow_left_black" />
                     <div className="sb-child-alt-right">
                         <span id="mode-label" onClick={this.openDialog}>{m.label}</span>
                     </div>
                 </div>
 
-                <Dialog open={this.state.open} onCancel={this.closeDialog} onClick={this.handleClick}>
+                <Dialog open={this.props.ui.menu} onCancel={this.closeDialog} onClick={this.handleClick}>
                     <input onChange={this.handleInput} value={this.state.value} />
 
                     <div className="child-container">

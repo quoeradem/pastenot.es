@@ -103,3 +103,13 @@
 [class^="pls-"], [class*=" pls-"] {
     font-size: 20px;
 }
+
+.togglebutton {
+    .noselect;
+    outline: none !important;
+    color: @ui-grey;
+    cursor: pointer;
+
+    &.active {color: @ui-cyan;}
+    &:hover {color: #fff !important;}
+}
