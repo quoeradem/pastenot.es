@@ -4,9 +4,7 @@ import {Link} from 'react-router';
 
 import Tooltip from 'react-mdl/lib/Tooltip';
 
-var moment = require('moment');
-
-import config from '../config';
+const moment = require('moment');
 
 /* object mapping Paste 'language' to icon
    TODO: finalize and move somewhere else */
@@ -40,7 +38,7 @@ const fileicons = {
     "text/x-yaml"         : "file-icon_yaml",
 };
 
-@connect(state => ({state: state}))
+@connect(state => ({state}))
 export default class Drawer extends React.Component {
     constructor(props) {
         super(props);
@@ -53,34 +51,35 @@ export default class Drawer extends React.Component {
 
     componentWillReceiveProps = (nextProps) => {
         /* Update list of recent pastes */
-        let newPastes = nextProps.state.user.pastes;
-        if(this.props.state.user.pastes != newPastes) this.getPastes(newPastes);
+        const newPastes = nextProps.state.user.pastes;
+        if(this.props.state.user.pastes !== newPastes) {
+            this.getPastes(newPastes);
+        }
     }
 
     getPastes = async (pastes) => {
-        let o = {};
-        let _children = [];
+        const o = {}, children = [];
 
-        pastes.map((arr, index) => {
-            let key = moment(arr.created).format("MMM Do YYYY");
-            if(o[key] === undefined) o[key] = [];
-            o[key].push(arr);
-        });
+        for(let i = 0, len = pastes.length; i < len; i++) {
+            const key = moment(pastes[i].created).format("MMM Do YYYY");
+            if(typeof o[key] === 'undefined') o[key] = [];
+            o[key].push(pastes[i]);
+        }
 
-        for(var date in o) {
-            let items = o[date].map((arr, index) => (
+        for(let date in o) {
+            const items = o[date].map((arr, index) => (
                 <div className="paste-item" key={index}>
                     <Tooltip label={arr.content} position="right" key={index}>
                         <span>
-                            <span className={arr.language ? fileicons[arr.language] : "file-icon_txt"}/>
+                            <span className={arr.language ? fileicons[arr.language] : "file-icon_txt"} />
                             <Link to={arr.id}>{arr.id}</Link>
                         </span>
                     </Tooltip>
                 </div>
             ));
-            _children.push(<DrawerItem key={date} title={date} children={items} />);
+            children.push(<DrawerItem key={date} title={date} children={items} />);
         }
-        this.setState({children: _children});
+        this.setState({children});
     }
 
     render() {
@@ -88,7 +87,7 @@ export default class Drawer extends React.Component {
         const avatar = this.props.state.user.avatar;
         const totalPastes = this.props.state.user.totalPastes
         const totalViews = this.props.state.user.totalViews
-        return(
+        return (
             <div className={this.props.state.ui.drawer ? "drawer" : "hidden"}>
                 <div className="drawer-header">
                     {avatar ? <img className="avatar" src={avatar} /> : null}
@@ -123,14 +122,16 @@ class DrawerItem extends React.Component {
         this.setState({isOpen: !this.state.isOpen});
     }
 
-    render() { return(
-        <div>
-            <div className="paste-item paste-group" onClick={this.handleClick}>
-                <span className={this.state.isOpen ? "file-icon_chevron_down arrow" : "file-icon_chevron_right arrow"}/>
-                <i className="material-icons icon" style={{"fontSize": "16px"}}>date_range</i>
-                {this.state.title}
+    render() {
+        return (
+            <div>
+                <div className="paste-item paste-group" onClick={this.handleClick}>
+                    <span className={this.state.isOpen ? "file-icon_chevron_down arrow" : "file-icon_chevron_right arrow"} />
+                    <i className="material-icons icon" style={{fontSize: "16px"}}>date_range</i>
+                    {this.state.title}
+                </div>
+                {this.state.isOpen ? this.state.children : null}
             </div>
-            {this.state.isOpen ? this.state.children : null}
-        </div>
-    )}
+        )
+    }
 }

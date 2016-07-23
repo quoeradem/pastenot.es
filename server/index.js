@@ -12,20 +12,19 @@ import * as Actions from '../shared/actions';
 import {RouterContext, match, useRouterHistory} from 'react-router';
 import {createMemoryHistory, useQueries} from 'history';
 import createRoutes from '../shared/routes';
-import createLocation from 'history/lib/createLocation';
 
 /* Koa imports */
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
 import convert from 'koa-convert';
-var serve = require('koa-static-folder');
+const serve = require('koa-static-folder');
 
 /* Promise imports */
-var Promise = require('bluebird');
+const Promise = require('bluebird');
 import promiseMiddleware from '../shared/lib/promiseMiddleware';
 
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 import config from '../shared/config';
 
@@ -41,30 +40,32 @@ app.use(convert(serve('./dist')));
 const index = fs.readFileSync('./assets/index.html', {encoding: 'utf-8'});
 
 /* Mount API routes */
-const apiRouter = new Router({ prefix: "/api" });
-require('./api').default((apiRouter));
+const apiRouter = new Router({prefix: "/api"});
+require('./api').default(apiRouter);
 app.use(apiRouter.routes());
 
 /* Mount Auth routes */
 const authRouter = new Router();
-require('./auth').default((authRouter));
+require('./auth').default(authRouter);
 app.use(authRouter.routes());
 
 /* Render initial html + state */
-app.use(async (ctx, next) => {
+app.use(async ctx => {
     const store = applyMiddleware(promiseMiddleware)(createStore)(rootReducer);
 
-    let history = useRouterHistory(useQueries(createMemoryHistory))();
-    let routes = createRoutes(history);
-    let location = history.createLocation(ctx.request.url);
+    const history = useRouterHistory(useQueries(createMemoryHistory))();
+    const routes = createRoutes(history);
+    const location = history.createLocation(ctx.request.url);
 
-    var resolver = Promise.defer();
+    const resolver = Promise.defer();
 
-    // Check for JWT and set user state if token is valid
-    let token = await ctx.cookies.get('authtoken');
-    var decoded; try {decoded = jwt.verify(token, config.secret)} catch(err) {};
-    if(typeof decoded !== 'undefined')
+    try { // d(setUser) ⇔ ∃ auth cookie ^ JWT valid
+        const token = await ctx.cookies.get('authtoken');
+        const decoded = jwt.verify(token, config.secret);
         store.dispatch(Actions.setUser(decoded.login, decoded.avatar_url));
+    } catch(ignore) {
+        // Silence is golden.
+    }
 
     match({routes, location}, (err, redirectLocation, renderProps) => {
         // initialize initial component with access to redux store
@@ -79,32 +80,30 @@ app.use(async (ctx, next) => {
             ctx.status = 500;
         } else if(redirectLocation) {
             ctx.redirect(redirectLocation.pathname + redirectLocation.search);
-        } else if(renderProps == null) {
+        } else if(typeof renderProps === 'undefined') {
             ctx.body = "not found";
             ctx.status = 404;
         } else {
             getReduxPromise().then(() => {
-                let markup = renderToString(InitialComponent);
-                let initialState = JSON.stringify(store.getState())
+                const markup = renderToString(InitialComponent);
+                const initialState = JSON.stringify(store.getState())
                     .replace(/<\/script/g, '<\\/script')
                     .replace(/<!--/g, '<\\!--');
 
-                let html = index.replace('${markup}', markup)
+                const html = index.replace('${markup}', markup)
                     .replace('${initialState}', initialState)
                     .replace('${config}', JSON.stringify(config));
                 resolver.resolve(html);
             });
 
-            function getReduxPromise() {
-                let {query, params} = renderProps;
-                let comp = renderProps.components[renderProps.components.length - 1].WrappedComponent;
-                let promise = comp.fetchData ?
+            function getReduxPromise() { // read static fetchData fn of components to setup initial redux state
+                const {query, params} = renderProps;
+                const comp = renderProps.components[renderProps.components.length - 1].WrappedComponent;
+                return comp.fetchData ?
                     comp.fetchData({query, params, store}) :
                     Promise.resolve();
-
-                return promise;
             }
-	    }
+        }
     });
     ctx.body = await resolver.promise;
 });

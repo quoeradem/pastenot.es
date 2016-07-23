@@ -12,15 +12,15 @@ import ui from './ui';
 import isWrapped from './isWrapped';
 
 const rootReducer = combineReducers({
-    content: content,
-    meta: meta,
-    mode: mode,
-    readOnly: readOnly,
-    router: router,
-    isCopy: isCopy,
-    isWrapped: isWrapped,
-    user: user,
-    ui: ui
+    content,
+    meta,
+    mode,
+    readOnly,
+    router,
+    isCopy,
+    isWrapped,
+    user,
+    ui
 });
 
 export default rootReducer;

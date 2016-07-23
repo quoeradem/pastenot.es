@@ -6,7 +6,7 @@ import {browserHistory, Link} from 'react-router';
 import Tooltip from 'react-mdl/lib/Tooltip';
 import Button from 'react-mdl/lib/Button';
 
-@connect(state => ({state: state}))
+@connect(state => ({state}))
 export default class Toolbar extends React.Component {
     savePaste = () => {
         this.props.savePaste(this.props.state.content, this.props.state.mode);
@@ -21,7 +21,7 @@ export default class Toolbar extends React.Component {
     }
 
     viewText = () => {
-        browserHistory.push("/t" + this.props.state.router);
+        browserHistory.push(`/t${this.props.state.router}`);
     }
 
     render() {
@@ -40,21 +40,21 @@ export default class Toolbar extends React.Component {
                 <Tooltip label={<span>Save Paste<br />control + s</span>} position="right"><div className="toolbar-child">
                     <Button className="mdl-iconbutton"
                         onClick={this.savePaste}
-                        disabled={this.props.state.router != '/'}
+                        disabled={this.props.state.router !== '/'}
                     ><i className="material-icons">save</i></Button>
                 </div></Tooltip>
 
                 <Tooltip label={<span>Duplicate & Edit<br />control + d</span>} position="right"><div className="toolbar-child">
                     <Button className="mdl-iconbutton"
                         onClick={this.copyPaste}
-                        disabled={this.props.state.router == '/'}
+                        disabled={this.props.state.router === '/'}
                     ><i className="material-icons">content_copy</i></Button>
                 </div></Tooltip>
 
                 <Tooltip label={<span>View Text<br />control + shift + r</span>} position="right"><div className="toolbar-child">
                     <Button className="mdl-iconbutton"
                         onClick={this.viewText}
-                        disabled={this.props.state.router == '/'}
+                        disabled={this.props.state.router === '/'}
                     ><i className="material-icons">text_format</i></Button>
                 </div></Tooltip>
 
@@ -66,7 +66,7 @@ export default class Toolbar extends React.Component {
                     </Link>
                 </div></Tooltip>
 
-            <Tooltip label={this.props.state.user.login === '' ? "Login" : "Logout"} position="right"><div className="toolbar-child">
+                <Tooltip label={this.props.state.user.login === '' ? "Login" : "Logout"} position="right"><div className="toolbar-child">
                     <Link to={{pathname: "/auth/github", state: this.props.state.user.login === '' ? "login" : "logout"}}>
                         <Button className="mdl-iconbutton">
                             <i className="material-icons">exit_to_app</i>

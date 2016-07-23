@@ -1,5 +1,3 @@
-import {ABOUT_NAV, COPY_PASTE, NEW_PASTE, SAVE_PASTE} from '../actions';
-
 export default function readOnly(state = false, action) {
     switch(action.type) {
     case 'ABOUT_NAV':

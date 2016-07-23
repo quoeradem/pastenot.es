@@ -1,5 +1,3 @@
-import {ABOUT_NAV, GET_PASTE, NEW_PASTE, SET_CONTENT} from '../actions';
-
 export default function content(state = "", action) {
     switch(action.type) {
     case 'ABOUT_NAV':

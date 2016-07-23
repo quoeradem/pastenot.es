@@ -1,5 +1,3 @@
-import {GET_PASTE, SAVE_PASTE, SET_LINEC} from '../actions';
-
 export default function meta(state = {chars: 0, lines: 0}, action) {
     switch(action.type) {
     case 'GET_PASTE':

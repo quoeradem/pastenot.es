@@ -24,12 +24,12 @@ import {} from '../assets/stylesheets/style.less'; // import LESS
 const initialState = window.__INITIAL_STATE__;
 const store = applyMiddleware(promiseMiddleware)(window.devToolsExtension ? window.devToolsExtension()(createStore) : createStore)(rootReducer, initialState);
 
-render (
+render(
     <Provider store={store}>
-        { createRoutes(browserHistory) }
+        {createRoutes(browserHistory)}
     </Provider>, document.getElementById('react-view')
 );
 
 /* Keep router synced in redux state */
-import { updateRouter } from '../shared/actions';
+import {updateRouter} from '../shared/actions';
 browserHistory.listen(router => store.dispatch(updateRouter(router)));

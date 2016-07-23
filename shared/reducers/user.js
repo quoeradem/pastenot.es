@@ -1,5 +1,3 @@
-import {SET_USER, GET_PASTES, USER_LOGIN, USER_LOGOUT} from '../actions';
-
 export default function mode(state = {login: '', avatar: '', pastes: [], totalPastes: 0, totalViews: 0}, action) {
     switch(action.type) {
 
@@ -18,12 +16,11 @@ export default function mode(state = {login: '', avatar: '', pastes: [], totalPa
         }
 
     case 'USER_LOGOUT':
-        state = {login: '', avatar: '', pastes: [], totalPastes: 0, totalViews: 0};
-        return state;
+        return {login: '', avatar: '', pastes: [], totalPastes: 0, totalViews: 0};
 
     case 'GET_PASTES':
-        let pastes = action.res.items;
-        let views = pastes.reduce((total, elem) => total + elem.meta.views, 0);
+        const pastes = action.res.items;
+        const views = pastes.reduce((total, elem) => total + elem.meta.views, 0);
 
         return {
             ...state,

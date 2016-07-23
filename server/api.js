@@ -1,8 +1,6 @@
-var fs          = require('fs');
-var mongoose    = require('mongoose');
-var phonetic    = require('phonetic');
-var Promise     = require('bluebird');
-var jwt         = require('jsonwebtoken');
+const fs          = require('fs');
+const mongoose    = require('mongoose');
+const jwt         = require('jsonwebtoken');
 
 import Paste from './models/paste';
 import config from '../shared/config';
@@ -11,23 +9,23 @@ import config from '../shared/config';
 mongoose.connect(config.mongoURI);
 
 export default function routes(router) {
-    router.get('/about', async (ctx) => {
+    router.get('/about', async ctx => {
         const aboutContent = fs.readFileSync('./assets/about.md', {encoding: 'utf-8'});
         ctx.body = JSON.stringify({kind: "paste#about", content: aboutContent});
     })
 
     router.get('/paste/v1/:id', async (ctx, next) => {
         const paste = await Paste.findOne({id: ctx.params.id});
-        if(paste == null) {
+        if(paste === null) {
             ctx.body = JSON.stringify({
-                "error": {
-                    "errors": [{
-                        "domain": "global",
-                        "reason": "notFound",
-                        "message": "Paste not found " + ctx.params.id,
+                error: {
+                    errors: [{
+                        domain: "global",
+                        reason: "notFound",
+                        message: `Paste not found ${ctx.params.id}`,
                     }],
-                    "code": 404,
-                    "message": "Paste not found " + ctx.params.id,
+                    code: 404,
+                    message: `Paste not found ${ctx.params.id}`
                 }
             })
         } else {
@@ -42,29 +40,34 @@ export default function routes(router) {
         }
     })
 
-    router.get('/paste/v1/paste/history', async (ctx,next) => {
-        // Read JWT from cookie, verify, and return user ID
-        let token = await ctx.cookies.get('authtoken');
-        var uid; try {uid = jwt.verify(token, config.secret).id} catch(err) {};
+    router.get('/paste/v1/paste/history', async (ctx, next) => {
+        let uid = null; try { // Get user ID ⇔ ∃ auth cookie ^ JWT valid
+            const token = await ctx.cookies.get('authtoken');
+            uid = jwt.verify(token, config.secret).id;
+        } catch(ignore) {
+            // Silence is golden.
+        }
 
-        if(typeof uid !== 'undefined') { // User is valid
+        if(uid !== null) { // User is valid
             const pastes = await Paste.find({user: uid}).sort('-created');
 
-            let items = pastes.map(arr => {return {
-                kind: "paste#note",
-                id: arr.id,
-                content: arr.content.substring(0, 200),
-                language: arr.language,
-                meta: arr.meta,
-                status: arr.status,
-                created: arr.created
-            }});
+            const items = pastes.map(arr => (
+                {
+                    kind: "paste#note",
+                    id: arr.id,
+                    content: arr.content.substring(0, 200),
+                    language: arr.language,
+                    meta: arr.meta,
+                    status: arr.status,
+                    created: arr.created
+                }
+            ));
 
             ctx.body = JSON.stringify({
                 totalItems: pastes.length,
                 itemsPerPage: 30,
                 nextPageToken: "",
-                items: items
+                items,
             });
         } else { // User was either invalid or not provided
             ctx.body = "An error in MY api call?";
@@ -74,16 +77,16 @@ export default function routes(router) {
 
     router.put('/paste/v1/:id', async (ctx, next) => {
         const paste = await Paste.findOneAndUpdate({id: ctx.params.id}, {$inc: {"meta.views": 1}});
-        if(paste == null) {
+        if(paste === null) {
             ctx.body = JSON.stringify({
-                "error": {
-                    "errors": [{
-                        "domain": "global",
-                        "reason": "notFound",
-                        "message": "Paste not found " + ctx.params.id,
+                error: {
+                    errors: [{
+                        domain: "global",
+                        reason: "notFound",
+                        message: `Paste not found ${ctx.params.id}`,
                     }],
-                    "code": 404,
-                    "message": "Paste not found " + ctx.params.id,
+                    code: 404,
+                    message: `Paste not found ${ctx.params.id}`
                 }
             })
         } else {
@@ -99,36 +102,39 @@ export default function routes(router) {
     })
 
     router.post('/paste/v1/paste', async (ctx, next) => {
-        let content = ctx.request.body.content;
+        const content = ctx.request.body.content;
 
-        // Read JWT from cookie, verify, and return user ID
-        let token = await ctx.cookies.get('authtoken');
-        var uid; try {uid = jwt.verify(token, config.secret).id} catch(err) {};
+        let uid = null; try { // Get user ID ⇔ ∃ auth cookie ^ JWT valid
+            const token = await ctx.cookies.get('authtoken');
+            uid = jwt.verify(token, config.secret).id;
+        } catch(ignore) {
+            // Silence is golden.
+        }
 
-        var paste;
-        if(content.replace(/\s/g, '').length - 5 >>> 0 > 39995) {
+        let paste = null;
+        if(content.replace(/\s/g, '').length - 5 >>> 0 > 39995) { // [5,40000]
             ctx.body = JSON.stringify({
-                "error": {
-                    "errors": [{
-                        "domain": "global",
-                        "reason": "invalidParameter",
-                        "message": "Invalid length for content. Value must be within the range: [5, 40000]",
-                        "locationType": "parameter",
-                        "location": "content"
+                error: {
+                    errors: [{
+                        domain: "global",
+                        reason: "invalidParameter",
+                        message: "Invalid length for content. Value must be within the range: [5, 40000]",
+                        locationType: "parameter",
+                        location: "content"
                     }],
-                    "code": 400,
-                    "message": "Invalid length for content. Value must be within the range: [5, 40000]",
+                    code: 400,
+                    message: "Invalid length for content. Value must be within the range: [5, 40000]",
                 }
             })
-        } else if(typeof uid !== 'undefined') { // User is valid
+        } else if(uid !== null) { // User is valid
             paste = await new Paste({
-                content: content,
+                content,
                 language: ctx.request.body.language,
                 user: uid,
             }).save();
         } else { // User was either invalid or not provided -- save as anonymous.
             paste = await new Paste({
-                content: content,
+                content,
                 language: ctx.request.body.language,
             }).save();
         }

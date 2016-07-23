@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
-var Schema   = mongoose.Schema;
-var phonetic = require('phonetic');
-var moment   = require('moment');
+const mongoose = require('mongoose');
+const Schema   = mongoose.Schema;
+const phonetic = require('phonetic');
+const moment   = require('moment');
 
-var pasteSchema = new Schema({
+const pasteSchema = new Schema({
     id: {type: String, unique: true},
     content: String,
     language: String,
@@ -17,29 +17,31 @@ var pasteSchema = new Schema({
     user: String,
 });
 
+const Paste = mongoose.model('Paste', pasteSchema);
+
 pasteSchema.pre('save', async function (next) {
-    let syllables = 2;
-    let simplicity = 5;
+    const syllables = 2, simplicity = 5;
 
     this.id = await getUUID(syllables, simplicity);
     this.created = await moment().toISOString();
 
-    let lines = this.content.split(/\n/).length; // Linebreaks will always be LF (never CRLF).
+    const lines = this.content.split(/\n/).length; // Linebreaks will always be LF (never CRLF).
     this.meta.lines = lines;
     this.meta.chars = this.content.length - lines + 1;
     next();
 
-    async function getUUID(syllables, simplicity) {
-        if(simplicity == 0) {
+    /* recursive fn to generate UUID for paste */
+    async function getUUID(_syllables, _simplicity) {
+        let syllables = _syllables, phoneticSimplicity = _simplicity;
+        if(simplicity === 0) {
             syllables++;
-            simplicity = 5;
+            phoneticSimplicity = 5;
         }
-        let uuid = phonetic.generate({capFirst: false, syllables: syllables, phoneticSimplicity: simplicity});
+        const uuid = phonetic.generate({capFirst: false, syllables, phoneticSimplicity});
         const count = await Paste.count({id: uuid});
 
-        return !count ? uuid : await getUUID(syllables, --simplicity);
+        return count ? await getUUID(syllables, --phoneticSimplicity) : uuid;
     }
 })
 
-var Paste = mongoose.model('Paste', pasteSchema);
 module.exports = Paste;

@@ -1,11 +1,9 @@
-import {ABOUT_NAV, GET_PASTE, SET_MODE} from '../actions';
-
 export default function mode(state = "", action) {
     switch(action.type) {
-        
+
     case 'ABOUT_NAV':
         return "text/x-gfm";
-        
+
     case 'GET_PASTE':
         return action.res.language;
 

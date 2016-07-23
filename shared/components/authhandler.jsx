@@ -7,7 +7,7 @@ import cookie from 'react-cookie';
 
 import config from '../config';
 
-@connect(state => ({state: state}))
+@connect(state => ({state}))
 export default class AuthHandler extends React.Component {
     // TODO: use componentwillmount instead?
     componentDidMount = async () => {
@@ -21,25 +21,26 @@ export default class AuthHandler extends React.Component {
 
         /* Request user profile using JWT cookie :
            returns either valid 'profile' object or 'error' object */
-        let profile = await fetch("/auth/verify", {
+        const profile = await fetch("/auth/verify", {
             credentials: 'include',
             method: 'GET'
-        }).then((response) => {return response.json()});
+        }).then(response => response.json());
 
         // 'error' object not returned, dispatch redux action to store profile information
         if(!profile.hasOwnProperty('error')) {
             this.props.dispatch(Actions.setUser(profile.login, profile.avatar_url));
             browserHistory.replace("/");
         } else { // JWT not valid, initiate OAUTH2 process
-            const response_type = "?response_type=code"
-            const client_id = "&client_id=" + encodeURIComponent(config.auth.clientID);
-            const redirect_uri = "&redirect_uri=" + encodeURIComponent(config.auth.callbackURL);
+            const client_id = encodeURIComponent(config.auth.clientID);
+            const redirect_uri = encodeURIComponent(config.auth.callbackURL);
 
-            let query = response_type + client_id + redirect_uri;
-            window.open("https://github.com/login/oauth/authorize" + query, "Login with GitHub", "height=600, width=450");
+            const query = `?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`;
+            window.open(`https://github.com/login/oauth/authorize${query}`, "Login with GitHub", "height=600, width=450");
             return browserHistory.replace("/");
         }
     }
 
-    render() {return null}
+    render() {
+        return null;
+    }
 }

@@ -1,5 +1,3 @@
-import {TOGGLE_DRAWER, TOGGLE_MENU} from '../actions';
-
 export default function ui(state = {drawer: false, menu: false}, action) {
     switch(action.type) {
 
